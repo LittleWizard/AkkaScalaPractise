@@ -55,7 +55,7 @@ object HelloApp extends  App{
   println("random number " + randomObj)
 
 
-  
+
 
 
 
