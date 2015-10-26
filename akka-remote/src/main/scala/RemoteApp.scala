@@ -6,8 +6,9 @@ object RemoteApp extends App{
   remoteActor ! "The RemoteActor is alive"
 }
 
-class RemoteActor extends Actor{
+class RemoteActor extends Actor {
   def receive = {
+    case "TERMINATE" => context.system.terminate()
     case msg: String => {
       println(s"RemoteActor has received message '$msg'")
       sender ! "Hello from the RemoteActor"

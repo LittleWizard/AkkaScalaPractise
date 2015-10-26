@@ -1,6 +1,6 @@
 import akka.actor.{Actor, Props, ActorSystem}
 
-object LocalApp extends App{
+object LocalApp extends App {
   val system = ActorSystem("LocalActorSystem")
   val localActor = system.actorOf(Props[LocalActor])
   localActor ! "START"
@@ -11,6 +11,7 @@ class LocalActor extends Actor {
   var counter = 0;
   def receive = {
     case "START" =>
+      println("starting remote testing......")
       remote ! "Hello from the LocalActor"
     case msg: String =>
       println(s"LocalActor has received message : '$msg'")
