@@ -7,6 +7,12 @@ object Main extends App {
 
   implicit val system = ActorSystem("my-app-api")
 
+  import Bootstrap._
+
+  Bootstrap.print
+
+
+
   val receptionist = system.actorOf(Props[Receptionist], "receptionist")
 
   IO(Http) ! Bind(listener = receptionist, interface = "0.0.0.0", port = 8080)
