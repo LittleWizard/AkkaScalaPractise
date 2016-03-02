@@ -2,7 +2,7 @@
 
 object Bootstrap {
 
-  val appContext = ApplicationLoader.loadWebApplicationContext(classOf[WebConfiguration]);
+  val appContext = ApplicationLoader.loadWebApplicationContext(classOf[AppConfiguration]);
 
   implicit val string = appContext.getBean("getString")
 

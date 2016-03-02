@@ -16,6 +16,6 @@ libraryDependencies ++= Seq(
   "io.spray" %% "spray-can" % sprayVersion,
   "io.spray" %%  "spray-routing" % sprayVersion,
   "io.spray" %%  "spray-json" % "1.3.2",
- // "org.springframework" % "spring-context" % springVersion,
-  "org.springframework" % "spring-web" % springVersion
+  "org.springframework" % "spring-context" % springVersion
+  //"org.springframework" % "spring-web" % springVersion
 )
