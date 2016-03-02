@@ -10,3 +10,10 @@ libraryDependencies ++= Seq(
 )
 
 resolvers += "Akka Snapshot Repository" at "http://repo.akka.io/snapshots/"
+
+
+
+lazy val application = (project in file("application"))
+
+lazy val root = (project in file("."))
+               .aggregate(application)
