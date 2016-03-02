@@ -1,19 +1,28 @@
+import akka.actor._
 
 object ReverseActor {
 
-  //define messages for reverse actor here(Reverse, ReverseResult)
-  //define props and name for ReverseActor here
+  case class Reverse(value: String)
+
+  case class ReverseResult(value: String)
+
+  private implicit val system = Main.system
+
+  private val reverse = system.actorOf(Props[ReverseActor], "reverse-actor")
+
+  def  getReverseActor: ActorRef = {
+    return reverse
+  }
 
 }
 
 
-class ReverseActor {
+class ReverseActor extends Actor with ActorLogging {
   import ReverseActor._
-
-  //write your receive method here, respond with a reverseResult
-
-
-
-
-
+  def receive = {
+    case Reverse(value) => {
+      log.info("message received {}", value)
+      sender ! ReverseResult(value = value.reverse)
+    }
+  }
 }
