@@ -1,5 +1,6 @@
 import akka.actor.{Props, ActorSystem}
 import akka.io.IO
+import persistance.{Cmd, ExamplePersistentActor}
 import spray.can.Http
 import spray.can.Http.Bind
 
@@ -10,8 +11,6 @@ object Main extends App {
   import Bootstrap._
 
   Bootstrap.print
-
-
 
   val receptionist = system.actorOf(Props[Receptionist], "receptionist")
 
