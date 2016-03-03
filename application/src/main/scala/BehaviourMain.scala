@@ -1,6 +1,6 @@
 import akka.actor.{Props, ActorSystem}
 
-object Main1 extends App {
+object BehaviourMain extends App {
 
   implicit val system = ActorSystem("test-system")
 
