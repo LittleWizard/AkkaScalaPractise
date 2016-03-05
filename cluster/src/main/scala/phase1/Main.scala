@@ -11,7 +11,7 @@ object Main extends App {
   val seedConfig = ConfigFactory.load("seed")
 
 
-  val t = test("Hello World")
+ /* val t = test("Hello World")
 
   t match {
     case ts @ test(value) => {
@@ -39,8 +39,8 @@ object Main extends App {
   val system = ActorSystem("MySystem")
   val actor = system.actorOf(Props(new MyActor), name = "actor")
   system.scheduler.schedule(0 millis, 5000 millis, actor, Message())
+*/
 
-
- // val seedSystem = ActorSystem("words", seedConfig)
+  val seedSystem = ActorSystem("words", seedConfig)
 
 }
