@@ -15,5 +15,9 @@ resolvers += "Akka Snapshot Repository" at "http://repo.akka.io/snapshots/"
 
 lazy val application = (project in file("application"))
 
+lazy val cluster = (project in file("cluster"))
+
+
+
 lazy val root = (project in file("."))
-               .aggregate(application)
+               .aggregate(application, cluster)
