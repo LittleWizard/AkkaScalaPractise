@@ -113,7 +113,7 @@ trait CreateWorkerRouter { this: Actor =>
     context.actorOf(
       ClusterRouterPool(BroadcastPool(10), ClusterRouterPoolSettings(
         totalInstances = 100, maxInstancesPerNode = 20,
-        allowLocalRoutees = false, useRole = None)).props(Props[JobWorker]),
+        allowLocalRoutees = false, useRole = Some("worker"))).props(Props[JobWorker]),
       name = "worker-router")
   }
 }
