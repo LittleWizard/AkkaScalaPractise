@@ -80,7 +80,7 @@ trait CreateUserRouter { this: Actor =>
     context.actorOf(
       ClusterRouterPool(BroadcastPool(10), ClusterRouterPoolSettings(
         totalInstances = 100, maxInstancesPerNode = 20,
-        allowLocalRoutees = false, useRole = Some("user"))).props(Props[User]),
+        allowLocalRoutees = false, useRole = Some("worker"))).props(Props[User]),
       name = actorName)
   }
 }
