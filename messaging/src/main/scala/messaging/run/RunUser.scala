@@ -4,9 +4,9 @@ import akka.actor.ActorSystem
 import com.typesafe.config.ConfigFactory
 
 
-object RunWorker extends App {
+object RunUser extends App {
 
-  val config = ConfigFactory.load("worker")
+  val config = ConfigFactory.load("user")
   val seedSystem = ActorSystem("messaging-cluster", config)
 
 }
