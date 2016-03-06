@@ -19,6 +19,8 @@ object Boot extends App {
     println("Master node is ready.")
     IO(Http) ! Bind(listener = receiver, interface = "0.0.0.0", port = 8080)
 
+    system.actorOf(Props(new ClusterEventListener), "cluster-listener")
+
   }
 
 }
