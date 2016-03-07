@@ -25,6 +25,7 @@ with ActorLogging {
       log.info(s"$member REACHABLE")
     case state: CurrentClusterState =>
       log.info(s"Current state of the cluster: $state")
+    case msg: String => log.debug(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
   }
   override def postStop(): Unit = {
     Cluster(context.system).unsubscribe(self)

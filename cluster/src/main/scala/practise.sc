@@ -5,3 +5,4 @@ val res = (1 to 3).flatMap(i => text ++ text).toList
 res.foreach(b => {
   println(b)
 })
+Vector.fill(5){new Object}

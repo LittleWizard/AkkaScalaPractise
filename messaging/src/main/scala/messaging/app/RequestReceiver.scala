@@ -1,9 +1,10 @@
 package messaging.app
 
-import akka.actor.{Props, ActorRef, Actor, ActorLogging}
+import akka.actor._
 import akka.cluster.routing.{ClusterRouterPoolSettings, ClusterRouterPool}
 import akka.routing.BroadcastPool
 import akka.util.Timeout
+
 
 import scala.concurrent.duration._
 
@@ -23,13 +24,15 @@ class RequestReceiver extends HttpServiceActor
 }
 
 
-trait ReceiverRoute extends HttpService with CreateUserRouter { this: Actor =>
+trait ReceiverRoute extends HttpService with CreateUserRouter  { this: Actor =>
 
   implicit def executeContext: ExecutionContext
 
   var users = Map[String, ActorRef]()
 
-//  /val router = createUserRouter
+
+ override def supervisorStrategy: SupervisorStrategy =
+  SupervisorStrategy.stoppingStrategy
 
   def sendMessageRoute: Route = path("sendMessage") {
 
@@ -39,11 +42,11 @@ trait ReceiverRoute extends HttpService with CreateUserRouter { this: Actor =>
 
       implicit val timeout = Timeout(5 seconds)
 
-        /*if(users.getOrElse(request.userId, None) == None) {
+        if(users.getOrElse(request.userId, None) == None) {
           println("first user")
           val user = createUserRouter(request.userId)
           users = users + Tuple2(request.userId, user)
-          user ! request
+          user ! MessageRequest(userId = request.userId, value = request.value)
         }
 
         else {
@@ -52,15 +55,17 @@ trait ReceiverRoute extends HttpService with CreateUserRouter { this: Actor =>
 
           val user = users.get(request.userId).get
 
-          user ! request
+          user ! MessageRequest(userId = request.userId, value = request.value)
 
-        }*/
+        }
 
-        val user = createUserRouter(request.userId)
+       /* val user = createUserRouter(request.userId)
 
-        println("actor path >>>>>>>>>>>>>>>>>>>> " + user.path)
+        println("actor path >>>>>>>>>>>>>>>>>>>> " + user.path)*/
+/*
+        val master = context.actorOf(Props[Master], "master")
 
-        user ! Message(userId = request.userId, value = request.value)
+        master ! MessageRequest(userId = request.userId, value = request.value)*/
 
 
 

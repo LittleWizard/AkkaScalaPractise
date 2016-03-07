@@ -13,7 +13,8 @@ val springVersion = "4.2.1.RELEASE"
 
 libraryDependencies ++= Seq(
   "com.typesafe.akka" %% "akka-actor" % akkaVersion,
-  "com.typesafe.akka" %% "akka-cluster" % akkaVersion
+  "com.typesafe.akka" %% "akka-cluster" % akkaVersion,
+  "com.typesafe.akka" %% "akka-cluster-metrics" % akkaVersion
   //"com.typesafe.akka" %% "akka-persistence" % akkaVersion
   //"org.springframework" % "spring-web" % springVersion
 )

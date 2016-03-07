@@ -10,3 +10,6 @@ object Message extends DefaultJsonProtocol {
   implicit val format = jsonFormat2(Message.apply)
 
 }
+
+
+case class MessageRequest(userId: String, value: String)

@@ -6,10 +6,10 @@ class User extends Actor
               with ActorLogging {
 
   def receive = {
-    case msg @ Message(_,_) => {
-      log.debug("message has been received : " + msg.userId + " " + msg.value)
+    case MessageRequest(_,_) => {
+      println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>message has been received : " )
     }
-    case _ => log.info("inside user actor")
+    case _ => println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>inside user actor")
   }
 }
 
