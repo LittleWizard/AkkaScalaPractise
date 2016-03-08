@@ -1,8 +1,10 @@
 package messaging.app
 
 import akka.actor._
-import akka.cluster.routing.{ClusterRouterPoolSettings, ClusterRouterPool}
-import akka.routing.BroadcastPool
+import akka.cluster.{MemberStatus, Cluster}
+import akka.cluster.ClusterEvent._
+import akka.cluster.routing.{ClusterRouterGroupSettings, ClusterRouterGroup, ClusterRouterPoolSettings, ClusterRouterPool}
+import akka.routing.{RoundRobinGroup, RoundRobinPool, BroadcastPool}
 import akka.util.Timeout
 
 
@@ -30,9 +32,16 @@ trait ReceiverRoute extends HttpService with CreateUserRouter  { this: Actor =>
 
   var users = Map[String, ActorRef]()
 
+ /* var routees = List.empty
 
- override def supervisorStrategy: SupervisorStrategy =
-  SupervisorStrategy.stoppingStrategy
+  val workerRouter = context.actorOf(
+    ClusterRouterGroup(RoundRobinGroup(Nil), ClusterRouterGroupSettings(
+      totalInstances = 100, routeesPaths = routees,
+      allowLocalRoutees = false, useRole = Some("compute"))).props(),
+    name = "workerRouter")
+*/
+
+
 
   def sendMessageRoute: Route = path("sendMessage") {
 
@@ -43,7 +52,7 @@ trait ReceiverRoute extends HttpService with CreateUserRouter  { this: Actor =>
       implicit val timeout = Timeout(5 seconds)
 
         if(users.getOrElse(request.userId, None) == None) {
-          println("first user")
+          println("first user " + Boot.nodes.size)
           val user = createUserRouter(request.userId)
           users = users + Tuple2(request.userId, user)
           user ! MessageRequest(userId = request.userId, value = request.value)
@@ -69,7 +78,9 @@ trait ReceiverRoute extends HttpService with CreateUserRouter  { this: Actor =>
 
 
 
-
+        //passing arguments to constructor of the actor
+      /*val actor = context.system.actorOf(Props(classOf[User], "/user/userService"), request.userId)
+      actor ! MessageRequest(userId = request.userId, value = request.value)*/
 
       val response = Future.successful(request)
       complete(response)
@@ -83,7 +94,7 @@ trait ReceiverRoute extends HttpService with CreateUserRouter  { this: Actor =>
 trait CreateUserRouter { this: Actor =>
   def createUserRouter(actorName: String): ActorRef = {
     context.actorOf(
-      ClusterRouterPool(BroadcastPool(10), ClusterRouterPoolSettings(
+      ClusterRouterPool(RoundRobinPool(0), ClusterRouterPoolSettings(
         totalInstances = 100, maxInstancesPerNode = 20,
         allowLocalRoutees = false, useRole = Some("worker"))).props(Props[User]),
       name = actorName)

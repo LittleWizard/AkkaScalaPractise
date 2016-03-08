@@ -6,8 +6,8 @@ class User extends Actor
               with ActorLogging {
 
   def receive = {
-    case MessageRequest(_,_) => {
-      println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>message has been received : " )
+    case MessageRequest(a,b) => {
+      println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>message has been received : " + a + " " + b )
     }
     case _ => println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>inside user actor")
   }
