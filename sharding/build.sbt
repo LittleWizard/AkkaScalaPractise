@@ -1,4 +1,4 @@
-name := "messaging Application"
+name := "Sharding Application"
 
 version := "1.0"
 
@@ -14,6 +14,7 @@ val springVersion = "4.2.1.RELEASE"
 libraryDependencies ++= Seq(
 /*  "com.typesafe.akka" %% "akka-actor" % akkaVersion,*/
   "com.typesafe.akka" %% "akka-cluster" % akkaVersion,
+  "com.typesafe.akka" %% "akka-cluster-tools" % akkaVersion,
   "com.typesafe.akka" %% "akka-cluster-sharding" % akkaVersion,
   "com.typesafe.akka" %% "akka-persistence" % akkaVersion,
   "org.iq80.leveldb"            % "leveldb"          % "0.7",
