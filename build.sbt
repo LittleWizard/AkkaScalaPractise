@@ -19,6 +19,7 @@ lazy val cluster = (project in file("cluster"))
 
 lazy val messaging = (project in file("messaging"))
 
+lazy val sharding = (project in file("sharding"))
 
 lazy val root = (project in file("."))
                .aggregate(application, cluster)
