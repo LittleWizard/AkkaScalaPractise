@@ -1,8 +1,8 @@
 package messaging.run
 
-import akka.actor.{ActorPath, ActorSystem}
+import akka.actor.{ActorSystem}
 import com.typesafe.config.ConfigFactory
-import messaging.config.ShardJournal
+import messaging.config.{ShardRegionSetup, ShardJournalSetup}
 
 
 object SeedRunner extends App {
@@ -12,6 +12,7 @@ object SeedRunner extends App {
     withFallback(ConfigFactory.load())
   val system = ActorSystem("messaging-cluster", config)
 
-  ShardJournal.startupSharedJournal(system, true)
+  ShardJournalSetup.setup(system, false)
+  ShardRegionSetup.setup(system)
 
 }

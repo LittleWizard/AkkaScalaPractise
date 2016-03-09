@@ -7,7 +7,7 @@ import scala.concurrent.duration._
 
 object ShardJournalSetup {
 
-  def startupSharedJournal(system: ActorSystem, startStore: Boolean): Unit = {
+  def setup(system: ActorSystem, startStore: Boolean): Unit = {
 
     val path = ActorPath.fromString("akka.tcp://messaging-cluster@127.0.0.1:2559/user/store")
     if(startStore)

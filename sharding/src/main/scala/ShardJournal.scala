@@ -17,7 +17,6 @@ object ShardJournal {
     startupSharedJournal(system, true, path)
   }
 
-
   def startupSharedJournal(system: ActorSystem, startStore: Boolean, path: ActorPath): Unit = {
 
     if(startStore)

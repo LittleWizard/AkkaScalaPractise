@@ -1,102 +1,58 @@
 package messaging.app
 
 import akka.actor._
-import akka.cluster.{MemberStatus, Cluster}
-import akka.cluster.ClusterEvent._
-import akka.cluster.routing.{ClusterRouterGroupSettings, ClusterRouterGroup, ClusterRouterPoolSettings, ClusterRouterPool}
-import akka.routing.{RoundRobinGroup, RoundRobinPool, BroadcastPool}
+import akka.cluster.sharding.ClusterSharding
 import akka.util.Timeout
-
-
+import messaging.app.ClientProtocol._
+import messaging.app.User.MessageContent
 import scala.concurrent.duration._
-
 import spray.routing.{Route, HttpService, HttpServiceActor}
-
 import scala.concurrent.{Future, ExecutionContext}
 import spray.httpx.SprayJsonSupport._
+import akka.pattern.ask
+
 
 class RequestReceiver extends HttpServiceActor
                          with ReceiverRoute
                          with ActorLogging {
-
   implicit def executeContext = context.dispatcher
 
-  def receive: Receive = runRoute(sendMessageRoute)
-
+  def receive: Receive = runRoute(sendMessageRoute ~ getMessagesRoute)
 }
 
-
-trait ReceiverRoute extends HttpService with CreateUserRouter  { this: Actor =>
-
+trait ReceiverRoute extends HttpService {
+  this: Actor =>
   implicit def executeContext: ExecutionContext
 
-  var users = Map[String, ActorRef]()
-
- /* var routees = List.empty
-
-  val workerRouter = context.actorOf(
-    ClusterRouterGroup(RoundRobinGroup(Nil), ClusterRouterGroupSettings(
-      totalInstances = 100, routeesPaths = routees,
-      allowLocalRoutees = false, useRole = Some("compute"))).props(),
-    name = "workerRouter")
-*/
-
-
+  val userRegion = ClusterSharding(context.system).shardRegion(User.shardName)
 
   def sendMessageRoute: Route = path("sendMessage") {
-
     post {
-
       entity(as[Message]) { request =>
-
-      implicit val timeout = Timeout(5 seconds)
-
-        if(users.getOrElse(request.userId, None) == None) {
-          println("first user " + Boot.nodes.size)
-          val user = createUserRouter(request.userId)
-          users = users + Tuple2(request.userId, user)
-          user ! MessageRequest(userId = request.userId, value = request.value)
-        }
-
-        else {
-
-          println("user already presents")
-
-          val user = users.get(request.userId).get
-
-          user ! MessageRequest(userId = request.userId, value = request.value)
-
-        }
-
-       /* val user = createUserRouter(request.userId)
-
-        println("actor path >>>>>>>>>>>>>>>>>>>> " + user.path)*/
-/*
-        val master = context.actorOf(Props[Master], "master")
-
-        master ! MessageRequest(userId = request.userId, value = request.value)*/
-
-
-
-        //passing arguments to constructor of the actor
-      /*val actor = context.system.actorOf(Props(classOf[User], "/user/userService"), request.userId)
-      actor ! MessageRequest(userId = request.userId, value = request.value)*/
-
-      val response = Future.successful(request)
-      complete(response)
-
+        implicit val timeout = Timeout(1 seconds)
+        val response: Future[SendMessageResponse] = ask(userRegion, User.AddMessage(userId = request.userId, content = MessageContent(value = request.value)))
+          .map { value =>
+            SendMessageResponse(success = true, Data = value.toString)
+          }
+       // val response = Future.successful(request)
+        complete(response)
       }
     }
   }
-}
 
 
-trait CreateUserRouter { this: Actor =>
-  def createUserRouter(actorName: String): ActorRef = {
-    context.actorOf(
-      ClusterRouterPool(RoundRobinPool(0), ClusterRouterPoolSettings(
-        totalInstances = 100, maxInstancesPerNode = 20,
-        allowLocalRoutees = false, useRole = Some("worker"))).props(Props[User]),
-      name = actorName)
-  }
+   def getMessagesRoute: Route = (get & path("getMessages" / RestPath)) { id =>
+     implicit val timeout = Timeout(5 seconds)
+
+     println("serving for user id : " + id.toString)
+
+     val response  = ask(userRegion, User.GetInboxMessage(userId = id.toString()))
+     .map { response =>
+       GetMessageResponse(success = true, Data = response.asInstanceOf[List[MessageContent]].map(b => Message(userId = id.toString(), b.value)))
+     }
+
+     complete(response)
+   }
+
+
 }
