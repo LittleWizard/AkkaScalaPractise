@@ -1,8 +1,18 @@
 package messaging.app
 
-import akka.actor.{ActorLogging, Actor}
+import akka.actor.{Props, ActorRef, ActorLogging, Actor}
 
-class User extends Actor
+object MessagingUser {
+
+  def props(messagingUser: ActorRef): Props =
+  Props[MessagingUser]
+
+  case class MessageContent()
+
+}
+
+
+class MessagingUser extends Actor
               with ActorLogging {
 
   def receive = {
