@@ -1,0 +1,10 @@
+jar tvf target/myproject-0.0.1-SNAPSHOT.jar // to view contents exist in the specified  jar file
+
+mvn package
+
+mvn spring-boot:run
+
+mvn dependency:tree
+
+
+java -jar (name-of-the-executable-jar-file)
