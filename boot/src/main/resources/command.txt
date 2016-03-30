@@ -8,3 +8,6 @@ mvn dependency:tree
 
 
 java -jar (name-of-the-executable-jar-file)
+
+
+sbt "project api" "runMain App" // when using in sbt
