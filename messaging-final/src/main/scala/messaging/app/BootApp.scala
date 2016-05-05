@@ -5,7 +5,8 @@ import akka.cluster.Cluster
 import akka.io.IO
 import com.typesafe.config.ConfigFactory
 import messaging.config.{AppConfiguration, ApplicationLoader}
-import messaging.config.{ShardJournalSetup, ShardRegionSetup}
+import messaging.config.{ShardRegionSetup}
+//import messaging.config.{ShardJournalSetup}
 import messaging.service.MessageService
 import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import spray.can.Http

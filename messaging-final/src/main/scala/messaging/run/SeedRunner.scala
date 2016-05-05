@@ -2,7 +2,8 @@ package messaging.run
 
 import akka.actor.{ActorSystem}
 import com.typesafe.config.ConfigFactory
-import messaging.config.{ShardRegionSetup, ShardJournalSetup}
+import messaging.config.{ShardRegionSetup}
+//import messaging.config.ShardJournalSetup
 
 
 object SeedRunner extends App {

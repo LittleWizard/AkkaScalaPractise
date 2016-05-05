@@ -1,3 +1,4 @@
+/*
 package messaging.config
 
 import akka.actor._
@@ -31,3 +32,4 @@ object ShardJournalSetup {
   }
 
 }
+*/

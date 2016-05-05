@@ -2,7 +2,7 @@ package messaging.run
 
 import akka.actor.ActorSystem
 import com.typesafe.config.ConfigFactory
-import messaging.config.ShardJournalSetup
+//import messaging.config.ShardJournalSetup
 
 
 object ShardJournalRunner extends App {

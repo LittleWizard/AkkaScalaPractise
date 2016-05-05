@@ -24,6 +24,7 @@ libraryDependencies ++= Seq(
   "org.springframework" % "spring-context" % springVersion,
   "com.typesafe.akka" %% "akka-persistence" % akkaVersion,
   "org.springframework.data" % "spring-data-cassandra" % "1.3.4.RELEASE",
-  "com.typesafe.akka" %% "akka-persistence-cassandra" % "0.11"
+  "com.typesafe.akka" %% "akka-persistence-cassandra" % "0.11",
+  "javax.inject" % "javax.inject" % "1"
 
 )
